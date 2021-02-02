@@ -1,0 +1,11 @@
+/**/.classpath
+/**/.metadata
+/**/*.project
+/**/*.settings
+/**/*.tern-project
+/**/EarContent
+/**/bin
+/**/target
+!/**/.s2i/bin
+/**/.recommenders
+/**/.DS_Store
