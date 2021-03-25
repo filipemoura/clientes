@@ -1,9 +1,12 @@
 package br.projeto.clientes.rest;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +32,11 @@ public class ClienteController {
 		this. clienteRepository = clienteRepository;
 	}
 	
+	@GetMapping
+	public List<Cliente> obterTodos() {
+		return clienteRepository.findAll();
+	}
+	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Cliente salvar(@RequestBody @Valid Cliente cliente) {
@@ -49,7 +57,7 @@ public class ClienteController {
 			clienteRepository.delete(cliente);
 			return Void.TYPE;
 		})
-		.orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		.orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado."));
 	}
 	
 	@PutMapping("{id}")
