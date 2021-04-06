@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
+import br.projeto.clientes.UsuarioCadastradoException;
 import br.projeto.clientes.model.entity.Usuario;
-import br.projeto.clientes.model.repository.UsuarioRepository;
+import br.projeto.clientes.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -18,12 +20,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UsuarioController {
 	
-	private final UsuarioRepository usuarioRepository;
+	private final UsuarioService usuarioService;
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	private void salvar(@RequestBody @Valid Usuario usuario) {
-		usuarioRepository.save(usuario);
+		try {
+			usuarioService.salvar(usuario);			
+		} catch (UsuarioCadastradoException e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
 	}
 
 }
